@@ -3,18 +3,18 @@ Generate Stripped Program with Dynamic Profiling
 
 This project is my experiment to generate a stripped program with dynamic profiling.
 Namely, to profile hot code path and strip out code that never uses. This obviously
-will generate incorrect program, but idea is that given statistically significant tests,
-can we generate "correct" program for most cases, and this "correct" program will
-significantly smaller than the original always correct one?
+will generate incorrect program, but this idea is that given statistically significant
+tests, can we generate "correct" program for most cases, and this "correct" program will
+be significantly smaller than the original always correct one?
 
 This implementation as provided now is a proof-of-concept.
 
 Use
 ---
 
-You need to have LLVM install, and check to see if you have llvm-config in your /bin path.
+You need to have LLVM installed, and check to see if you have llvm-config in your $PATH.
 
-In this proof-of-concept, I provided a demo app in ./tests called gcd.c. First, go to ./tests
+In this proof-of-concept, I provided a demo program in ./tests called gcd.c. First, go to ./tests
 
 	./irgen.sh
 
@@ -50,7 +50,7 @@ This will generate stripped down version of original program, how do we know it 
 
 	llvm-dis tests/gcd.v.bc -o tests/gcd.v.ll
 
-Comparing the lines of code for tests/gcd.v.ll and tests/gcd.ll, you can see tets/gcd.v.ll has less
+Comparing the lines of code for tests/gcd.v.ll with tests/gcd.ll, you can see tets/gcd.v.ll has less
 lines of code.
 
 Now, to compile the stripped down program, go to ./tests directory:
@@ -66,9 +66,9 @@ Well, it is still correct. But how about other cases?
 
 	./gcd-v 14 35
 
-Again, it outputs 7, which is the same as original gcd program. Pretty good. But it will break down
+Again, it outputs 7, which is the same as original gcd program. Pretty good. However, it will break down
 in case:
 
 	./gcd-v 0 12
 
-Oops, now while the original program will gives 0, the stripped down version will stuck in a infinite loop.
+Oops, now while the original program will gives 0, the stripped down version will stuck in a infinite loop :(
